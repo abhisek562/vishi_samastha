@@ -1,0 +1,148 @@
+// http://ionicframework.com/docs/theming/
+@import '~@ionic/angular/css/core.css';
+@import '~@ionic/angular/css/normalize.css';
+@import '~@ionic/angular/css/structure.css';
+@import '~@ionic/angular/css/typography.css';
+@import '~@ionic/angular/css/display.css';
+@import '~@ionic/angular/css/padding.css';
+@import '~@ionic/angular/css/float-elements.css';
+@import '~@ionic/angular/css/text-alignment.css';
+@import '~@ionic/angular/css/text-transformation.css';
+@import '~@ionic/angular/css/flex-utils.css';
+
+.toolbar-container{
+    background: #000;
+    color:#fff;
+}
+
+/* Set variables for all modes */
+:root {
+    /* Set the background of the entire app */
+    --ion-background-color: #0E6A37;
+  
+    /* Set the font family of the entire app */
+    --ion-font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;
+
+    --ion-toolbar-background: #000;
+    --ion-toolbar-color: #fff;
+    --ion-tab-bar-background: #000;
+    
+    ion-icon.hydrated {
+        color: #fff;
+    }
+    ion-tab-button {
+        color: #fff;
+    }
+    ion-tab-button.tab-selected {
+        color: #FCDB04;
+    }
+    ion-tab-button.tab-selected ion-icon {
+        color: #FCDB04!important;
+    }
+    input.searchbar-input.sc-ion-searchbar-md {
+        background: #fff!important;
+        color: #000;
+        box-shadow: none;
+        border-radius: 5px;
+    }
+    ion-icon.searchbar-search-icon.sc-ion-searchbar-md.hydrated {
+        color: #000;
+    }
+    .toggle-icon{
+        --background: #fff!important;
+    }
+    .sc-ion-alert-md-h {   
+        --max-width: 299px!important;
+        --width: 100%!important;
+    }
+    .alert-button.sc-ion-alert-md {  
+        color: #000!important;
+        font-weight: 600!important;
+    }
+    .sc-ion-alert-md .alert-radio-icon.sc-ion-alert-md {
+        border-color: #5f5f5f!important;
+    }
+    .alert-radio-inner.sc-ion-alert-md {
+        
+        background-color: #FCDB04!important;
+    }
+    .alert-radio-label.sc-ion-alert-md {
+        padding-left: unset;
+        padding-right: unset;
+        -webkit-padding-start: 52px;
+        padding-inline-start: 34px!important;
+        -webkit-padding-end: 26px;
+        padding-inline-end: 12px!important;
+    }
+
+
+    ion-button .button-native {
+          
+            background: #000!important;
+
+    }
+    
+    .native-input.sc-ion-input-md{
+        background:#fff!important;
+    }
+    /* css added by dipankar@appycodes */
+    .action-sheet-group{ 
+        background: #fff!important;
+      }
+  }
+ 
+  /* Set text color of the entire app for iOS only */
+  .ios {
+    --ion-text-color: #000;
+  }
+  
+  /* Set text color of the entire app for Material Design only */
+  .md {
+    --ion-text-color: #222;
+  }
+
+  .m-alert.m-alert--outline.m-alert--outline-2x.alert.fade.show.alert-danger {
+   
+  
+    color: #FCDB04!important;
+    font-weight: 400;
+    border-radius: 5px;
+  border:1px solid #fff;
+    font-size:14px;
+    margin-bottom:5px;
+    text-align:center;
+    padding-inline-start: 15px;
+    padding-inline-end: 15px;
+    padding-block-start: 15px;
+    padding-block-end: 15px;
+    margin-inline-start: 15px;
+    margin-inline-end: 15px;
+}
+
+.searchbar-input.sc-ion-searchbar-md { 
+    -webkit-padding-start: 41px;
+    padding-inline-start: 5px!important;
+    -webkit-padding-end: 10px;
+    padding-inline-end: 5px!important;
+  }
+  ion-icon.searchbar-search-icon.sc-ion-searchbar-md.md.hydrated{
+    display:none;
+  }
+  .infinite-scroll-content-md .infinite-loading-text {
+    color: #ffce00!important;
+  }
+  
+
+ .signal-marker{
+     font-size:13px;
+ }
+
+ .check-version-class {
+     --text-align: center;
+     
+    .toast-header {
+      font-size: large;
+      text-align: center;
+      font-weight: 600;
+    }
+  }

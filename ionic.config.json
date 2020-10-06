@@ -1,0 +1,7 @@
+{
+  "name": "pencm",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

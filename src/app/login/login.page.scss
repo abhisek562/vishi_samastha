@@ -1,0 +1,68 @@
+
+.m-form__help{
+    color:#FCDB04;
+    letter-spacing: .07em;
+    font-weight: 500;
+    font-size:13px;
+}
+.logo-app{
+    margin-left: auto;
+    margin-right: auto;
+    width:50%;
+}
+.m-alert.m-alert--outline.m-alert--outline-2x.alert.fade.show.alert-danger {
+    background-color: #ffffff!important;
+    border-color: #ee2a5c!important;
+    color: #000000!important;
+    font-weight: 400;
+    border-radius: 5px;
+    padding:5px;
+}
+.button-native {
+    margin-left: 0;
+    margin-right: 0;
+    display: block;
+    width: 100%;
+    clear: both;
+    contain: content;
+    background: #000!important;
+}
+:host {
+   
+    .sc-ion-input-md-h{
+        --padding-start: 10px;
+    }
+    input.native-input.sc-ion-input-md{
+        background:#fff;
+    }
+    .native-input.sc-ion-input-md{
+        background:#fff!important;
+    }
+}
+ion-button.button.button-block.button-solid.ion-activatable.ion-focusable.hydrated {
+    --background: #000;
+    padding-inline-start: 16px;
+    padding-inline-end: 16px;
+}
+:root {
+     --ion-background-color:#FCDB04!important; 
+  
+}
+h3 {
+    font-size: 26px;
+    color: #FCDB04;
+}
+.native-input.sc-ion-input-md{
+    background:#fff!important;
+}
+.error-login {
+    padding-inline-start: 17px;
+    margin-block-start: 10px;
+    margin-block-end: 10px;
+}
+ion-item.item.md {
+    --border-color: transparent;
+    --highlight-color-focused: transparent;
+    --highlight-color-invalid: transparent;
+    --highlight-color-valid: transparent;
+}

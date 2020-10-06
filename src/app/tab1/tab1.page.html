@@ -1,0 +1,167 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Dashboard
+      <div class="loader" *ngIf="syncing"></div>
+
+    </ion-title>
+    <ion-buttons slot="end" class="sync-btn" *ngIf="connectionStatus">
+      <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="online_i_am"> Online</span>
+    </ion-buttons>
+
+    <ion-buttons slot="end" class="sync-btn-no-internet" *ngIf="!connectionStatus">
+      <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="signal-marker"> Offline</span>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="welcome-card">
+    <ion-card-header>
+      <ion-card-title>Welcome, {{username | titlecase }}</ion-card-title>
+      <ion-col>
+        <div class="version-info"> Version : {{AppName}} ( {{usingVersion}} ) </div>
+      </ion-col>
+    </ion-card-header>
+    <ion-card-content *ngIf="orders">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="bold-label">Total delivered</div>
+          </ion-col>
+          <ion-col>
+            <div>{{orders.delivered}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="bold-label">Total Pending</div>
+          </ion-col>
+          <ion-col>
+            <div>{{orders.pending}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="bold-label">Total undelivered</div>
+          </ion-col>
+          <ion-col>
+            <div>{{orders.undelivered}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="bold-label">Orders pending to Sync</div>
+          </ion-col>
+          <ion-col>
+            <div>{{countSyncableOrders}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <ion-tab-button tab="orders" class="custom-ion-tab">
+                <ion-icon name="md-list"></ion-icon>
+                <ion-label style="background: black;padding: 5px 16px;border-radius: 5px;text-transform: uppercase;">Go
+                  to orders</ion-label>
+              </ion-tab-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid *ngIf="onlineMode">
+        <ion-row>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+          <ion-col>
+            <div>
+
+              <ion-button size="small" (click)="syncLocal()">
+                <ion-icon ios="ios-sync" md="md-sync"></ion-icon>
+                Sync offline records ({{countSyncableOrders}} pending)
+              </ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+        </ion-row>
+        <!-- <ion-row *ngIf="orders.total_unsynced_images">
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+          <ion-col>
+            <div>
+
+              <ion-button size="small" (click)="syncImages()" class="sync-image">
+                <ion-icon ios="ios-sync" md="md-sync"></ion-icon>
+                Sync un synced ( {{orders.total_unsynced_images}} images )
+              </ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+        </ion-row> -->
+      </ion-grid>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <ion-button size="small" (click)="logout()">
+                <ion-icon ios="ios-log-out" md="md-log-out"></ion-icon>
+                Logout
+              </ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div class="bold-label"></div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

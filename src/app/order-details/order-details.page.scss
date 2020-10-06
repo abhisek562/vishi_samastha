@@ -1,0 +1,118 @@
+.welcome-card ion-img {
+    max-height: 35vh;
+    overflow: hidden;
+  }
+  ion-card.welcome-card.sc-ion-card-md-h.sc-ion-card-md-s.hydrated {
+    background: #fff;
+  }
+  ion-card-title.hydrated {
+    text-align: center!important;
+  }
+  .bold-label{
+    font-weight:bold;
+  }
+  .card-content-md {
+    padding-left: unset;
+    padding-right: unset;
+     -webkit-padding-start: 3px!important; 
+     padding-inline-start: 3px!important; 
+     -webkit-padding-end: 3px!important; 
+     padding-inline-end: 1px!important; 
+     padding-top:0px!important;
+     padding-bottom:0px!important;
+  }
+  
+  .button-solid{
+    --background: #000!important;
+    --background-focused:  #000!important;
+    --color: var(--ion-color-primary-contrast,#fff);
+    --color-activated: var(--ion-color-primary-contrast,#fff);
+    --color-focused: var(--ion-color-primary-contrast,#fff);
+    height: 51px;
+}
+.welcome-card .card-content-md {
+    padding-left: unset;
+    padding-right: unset;
+     -webkit-padding-start: 3px!important; 
+     padding-inline-start: 0px!important; 
+     -webkit-padding-end: 3px!important; 
+     padding-inline-end: 0px!important; 
+  }
+  .welcome-card ion-grid.hydrated {
+    _border-bottom: 1px solid #525151e8;
+}
+
+.welcome-card ion-grid.hydrated:nth-last-child(odd) {
+    background: #fff;
+  }
+  
+  .welcome-card ion-grid.hydrated:nth-last-child(even) {
+    background: #eee;
+  }
+ 
+ion-select.hydrated {
+    display: none;
+}
+
+ion-grid.hydrated {  
+    padding-bottom: 0px;
+}
+:host{
+  .alert-tappable.sc-ion-alert-md {  
+    height: 36px!important;  
+  }
+  .sc-ion-input-md-h {
+   
+    background: #fff;
+}
+}
+ion-button.small-btn.button.button-small.button-solid.ion-activatable.ion-focusable.hydrated {
+  height: 30px;
+ 
+}
+ion-input.ng-untouched.ng-dirty.ng-valid.ion-untouched.ion-dirty.ion-valid.sc-ion-input-md-h.sc-ion-input-md-s.has-value.hydrated {
+  background: #fff;
+}
+input.native-input.sc-ion-input-md {
+  background: #fff;
+}
+.sc-ion-input-md-h {
+   
+  background: #fff;
+}
+.my-custom-class{
+  --background: #FFDB22;
+  --color:#FF3F22;
+  --border-style:solid;
+  --border-width :5px;
+  --border-color:#FF3F22;
+}
+.welcome-card ion-button.button.button-block.button-solid.ion-activatable.ion-focusable.hydrated {
+  height: 32px;
+}
+
+ion-buttons.sync-btn.sc-ion-buttons-md-h.sc-ion-buttons-md-s.hydrated {
+  font-size: 22px;
+}
+ion-buttons.sync-btn.sc-ion-buttons-md-h.sc-ion-buttons-md-s.hydrated ion-icon{
+  color:rgb(14, 194, 84)!important
+}
+ion-buttons.sync-btn-no-internet.sc-ion-buttons-md-h.sc-ion-buttons-md-s.hydrated ion-icon{
+color:#ff0000 !important
+}
+
+
+
+
+
+.online_i_am {
+  animation: blinker 4s linear infinite;
+  font-size:13px;
+  color: #fff;
+}
+ion-icon.hydrated {
+  margin-inline-end: 5px!important;
+}
+.text-msg{
+  color:#fff;
+}

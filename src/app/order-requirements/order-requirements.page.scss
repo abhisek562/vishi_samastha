@@ -1,0 +1,112 @@
+.welcome-card ion-img {
+    max-height: 35vh;
+    overflow: hidden;
+  }
+  ion-card.welcome-card.sc-ion-card-md-h.sc-ion-card-md-s.hydrated {
+    background: #fff;
+  }
+  ion-card-title.hydrated {
+    text-align: center!important;
+  }
+  .bold-label{
+    font-weight:bold;
+  }
+  .card-content-md {
+    padding-left: unset;
+    padding-right: unset;
+     -webkit-padding-start: 3px!important; 
+     padding-inline-start: 3px!important; 
+     -webkit-padding-end: 3px!important; 
+     padding-inline-end: 1px!important; 
+  }
+  .imgavatar{
+    width:50px;
+    height:50px;
+  }
+  ion-img.hydrated {
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+  ion-card.sc-ion-card-md-h.sc-ion-card-md-s.hydrated {
+    background: #fff;
+}
+
+ion-item.item.ion-focusable.item-interactive.item-input.item-has-placeholder.hydrated {
+  --ion-background-color: #fff;
+}
+
+
+
+ion-item.item.ion-focusable.item-label.hydrated.item-interactive.item-select {
+      --ion-background-color: #fff;
+}
+
+.m-form__help{
+  color:#ec0909;
+  letter-spacing: .07em;
+  font-weight: 500;
+  font-size:11px;
+}
+.button-solid{
+  --background: #000!important;
+}
+.text-center{
+  text-align: center;
+    background: red;
+    color: #fff;
+    font-size: 15px;
+    padding: 5px;
+}
+.bar-code{
+  color:red!important;
+}
+
+
+ion-buttons.sync-btn.sc-ion-buttons-md-h.sc-ion-buttons-md-s.hydrated {
+  font-size: 22px;
+}
+ion-buttons.sync-btn.sc-ion-buttons-md-h.sc-ion-buttons-md-s.hydrated ion-icon{
+  color:rgb(14, 194, 84)!important
+}
+ion-buttons.sync-btn-no-internet.sc-ion-buttons-md-h.sc-ion-buttons-md-s.hydrated ion-icon{
+color:#ff0000 !important
+}
+
+
+
+.online_i_am {
+  animation: blinker 4s linear infinite;
+  font-size:13px;
+  color: #fff;
+}
+ion-icon.hydrated {
+  margin-inline-end: 5px!important;
+}
+select{
+  width: 100%;
+  padding: 5px;
+  border: 0px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  padding-inline-start: 11px;
+  background:transparent;
+}
+.text-msg{
+  color:#fff;
+}
+
+.light-back{
+  background-color: #fff;
+}
+.verified-opt h3{  
+  color:red;
+}
+.class-green{
+  color:green!important;
+  font-weight: bold;
+}
+.class-red{
+  color:red;
+  font-weight: bold;
+}

@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Change password
+    </ion-title>
+    <ion-buttons slot="end" class="sync-btn" *ngIf="connectionStatus">
+      <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="online_i_am"> Online</span> 
+
+    </ion-buttons>
+
+    <ion-buttons slot="end" class="sync-btn-no-internet" *ngIf="!connectionStatus">
+
+        
+        
+      <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="signal-marker"> Offline</span> 
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="welcome-card">
+      
+    <ion-card-header>
+      
+      <ion-card-title>Chnage your password</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+        <!-- <app-auth-notice></app-auth-notice> -->
+        <ion-grid >
+             
+            <ion-row>
+              <ion-col>
+                <div *ngIf="msg" class="msg">{{msg}}</div>
+              </ion-col>
+            </ion-row>
+        </ion-grid>
+        <form [formGroup]="changePassword">
+  
+
+
+          <ion-grid >
+             
+                <ion-row>
+                  <ion-col>
+                    
+                      
+                        <ion-input formControlName="newPass" minlength="6" type="text" placeholder="Enter your new password" [ngClass]="{ 'is-invalid': submitted && f.newPass.errors }" ></ion-input>                      
+                     
+                                      
+                      <div *ngIf="submitted && f.newPass.errors" class="invalid-feedback m-form__help">
+                        <div class="error-login" *ngIf="f.newPass.errors.required">New password required</div>
+                        <div class="error-login" *ngIf="f.newPass.errors?.minlength">
+                          Password must be at least 6 characters long.
+                      </div> 
+                    </div>  
+                </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>                    
+                          <ion-input formControlName="oldPass"  minlength="6" placeholder="Enter your current password" [ngClass]="{ 'is-invalid': submitted && f.oldPass.errors }"></ion-input>                       
+                                       
+                        <div *ngIf="submitted && f.oldPass.errors" class="invalid-feedback m-form__help">
+                          <div class="error-login" *ngIf="f.oldPass.errors.required">Current password required</div>
+                          <div class="error-login" *ngIf="f.oldPass.errors?.minlength">
+                            Password must be at least 6 characters long.
+                        </div> 
+                      </div>
+                      
+                  </ion-col>
+                 
+           
+                </ion-row>
+            </ion-grid>
+            <ion-button size="small" class="small-btn" (click)="savePassword()">Save</ion-button>
+          </form>
+          
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-row>
+    <ion-col>
+    </ion-col>
+    <ion-col>
+      <ion-button (click)="sendDebugInfo()">Send Debug Info</ion-button>
+    </ion-col>
+    <ion-col>
+    </ion-col>
+  </ion-row>
+    
+  
+</ion-content>

@@ -1,0 +1,264 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="navigatebackToDetails(orderDetailsId)">
+      <ion-menu-button></ion-menu-button>
+      <ion-back-button color="danger" defaultHref="/app/dashbaord/main"></ion-back-button>
+      Order Requirements
+    </ion-buttons>
+
+    <ion-buttons slot="end" class="sync-btn" *ngIf="connectionStatus">
+      <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="online_i_am"> Online</span>
+
+    </ion-buttons>
+
+    <ion-buttons slot="end" class="sync-btn-no-internet" *ngIf="!connectionStatus">
+      <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="signal-marker"> Offline</span>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="requirementForm">
+    <ion-grid>
+
+      <ion-row>
+        <ion-col col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4>
+          <ion-card text-left>
+
+            <ion-card-content>
+              <!-- <ion-item>                       
+                          <ion-label>Select POD type</ion-label>
+                          <select formControlName="podtype" [ngClass]="{ 'is-invalid': submitted && f.podtype.errors }" (change)="validateAdahar($event)">
+                            <option value="">Select pod type</option>
+                            <option value="aadhaar">Aadhaar Card</option>
+                            <option value="voter">Voter Card</option>
+                            <option value="driving">Driving Licence</option>
+                          </select>                      
+                          <span class="invalid-feedback m-form__help" *ngIf="!requirementForm.controls['podtype'].valid && requirementForm.controls['podtype']?.touched">
+   
+                            <div class="error-login" >Please choose a pod type
+
+                            </div>
+                            
+                        </span>   
+                        <div *ngIf="submitted && f.podtype.errors" class="invalid-feedback m-form__help">
+                          <div class="m-form__help" *ngIf="f.podtype.errors.required">Please enter a pod type</div>
+                        </div>
+                        </ion-item> -->
+                 <ion-item *ngIf="verifyOtp">
+                  <ion-input formControlName="adharnumber"
+                  [ngClass]="{ 'is-invalid': submitted && f.adharnumber.errors }" placeholder="Enter unique number"></ion-input>
+                 </ion-item>
+                <div *ngIf="!verifyOtp">
+                <!-- <ion-label>Select POD type</ion-label> -->
+                <select formControlName="podtype" [ngClass]="{ 'is-invalid': submitted && f.podtype.errors }"
+                  (change)="validateAdahar($event)">
+                  <option value="">Select pod type</option>
+                  <option value="aadhaar">Aadhaar Card</option>
+                  <option value="voter">Voter Card</option>
+                </select>
+                <span class="invalid-feedback m-form__help"
+                  *ngIf="!requirementForm.controls['podtype'].valid && requirementForm.controls['podtype']?.touched">
+                  <div *ngIf="!submitted" class="error-login">Please choose a pod type
+                  </div>
+                </span>
+                <div *ngIf="submitted && f.podtype.errors" class="invalid-feedback m-form__help">
+                  <div class="m-form__help" *ngIf="f.podtype.errors.required">Please choose a pod type</div>
+                </div>
+              </div>
+              <ion-item *ngIf="!verifyOtp">
+                <!-- <ion-label>Received by</ion-label> -->
+                <ion-input formControlName="adharnumber" minlength="12" maxlength="12"
+                  [ngClass]="{ 'is-invalid': submitted && f.adharnumber.errors }" placeholder="POD number"></ion-input>
+                <ion-icon ios="ios-barcode" md="md-barcode" class="bar-code" (click)="openBarcodeReader()"></ion-icon>
+                <span class="invalid-feedback m-form__help"
+                  *ngIf="!requirementForm.controls['adharnumber'].valid && requirementForm.controls['adharnumber']?.touched">
+
+                  <div class="error-login" *ngIf="f.adharnumber.errors.required">Please enter a pod number</div>
+                  <div *ngIf="f.adharnumber.errors?.minlength">
+                    Must be 12 digit .
+                  </div>
+                  <div *ngIf="f.adharnumber.errors?.pattern">
+                    Must be number
+                  </div>
+                </span>
+
+                <div *ngIf="submitted && f.adharnumber.errors" class="invalid-feedback m-form__help">
+                  <div class="m-form__help" *ngIf="f.adharnumber.errors.required">Please enter a pod number</div>
+                </div>
+              </ion-item>
+              <ion-item>
+                <!-- <ion-label>Received by</ion-label> -->
+                <ion-input formControlName="receivedby" placeholder="Received by"></ion-input>
+               </ion-item>
+              <ion-item *ngIf="orderType=='REPLACEMENT'">
+                <!-- <ion-label>Received by</ion-label> -->
+                <ion-input formControlName="new_product_serial_no" placeholder="New product sereal number"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="orderType=='REPLACEMENT'">
+                <!-- <ion-label>Received by</ion-label> -->
+                <ion-input formControlName="grn_no" placeholder="Grn number"></ion-input>
+
+              </ion-item>
+              <ion-item *ngIf="orderType=='REPLACEMENT'">
+                <ion-label>Replacement at</ion-label>
+                <ion-select formControlName="replacement_at">
+                  <ion-select-option value="Branch">Branch </ion-select-option>
+                  <ion-select-option value="Customer">Customer</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <!-- <ion-label>Received by</ion-label> -->
+                <ion-input formControlName="remark" placeholder="Additional remarks"></ion-input>
+              </ion-item>
+              
+              <!-- current location content added by dipankar@appycodes -->
+              <ion-item color="light-back">
+                <p>current location:&nbsp;</p>
+                <span *ngIf="submitted && f.current_lat.errors" class="invalid-feedback m-form__help">
+                  <div class="m-form__help" *ngIf="f.current_lat.errors.required">Check your GPS</div>
+                </span>
+                <span *ngIf="!(submitted)">
+                  <div class="m-form__help" *ngIf="!(gpsstatus)">{{gpschk}}</div>
+                </span>
+                <p *ngIf="gpsstatus">{{gpschk}}</p>
+              </ion-item>
+              <ion-item color="light-back" class="verified-opt" *ngIf="otpCheck">
+                <h3 *ngIf="otpVerifiedMsg" class="class-green">OTP VERIFIED</h3>
+                <h3 *ngIf="!otpVerifiedMsg" class="class-red">OTP NOT VERIFIED, PLEASE VERIFY OTP</h3>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <!-- if location not visible then button will show by dipankar@appycodes -->
+      <ion-row>
+        <ion-col>
+        </ion-col>
+        <ion-col>
+          <ion-button *ngIf="!currentlat && !currentlang" (click)="enableloc()">Enable GPS</ion-button>
+        </ion-col>
+        <ion-col>
+        </ion-col>
+      </ion-row>
+      <!-- end here by dipankar@appycodes -->
+      
+      <ion-row>
+        <ion-col>
+        </ion-col>
+        <ion-col>
+          <ion-button *ngIf="verifyOtp" (click)="checkOtp()">Verify unique number</ion-button>
+        </ion-col>
+        <ion-col>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4>
+          <ion-card text-left>
+            
+            <div *ngIf="submitted && f.podFront.errors" class="invalid-feedback m-form__help">
+              <div class="m-form__help text-center" *ngIf="f.podFront.errors.required">Please upload the document</div>
+            </div>
+            <div card-image>
+              <ion-img *ngIf="image1" [src]="image1"></ion-img>
+              <ion-img *ngIf="!image1" [src]="ionload" style="width:32px; height:32px"></ion-img>
+            </div>
+            <ion-card-content>
+              <ion-card-title>
+                <h2 card-subtitle>Customer Photo with Product</h2>
+              </ion-card-title>
+              <ion-button (click)="presentActionSheet(1)" shape="round">
+                <ion-icon ios="ios-cloud-upload" md="md-cloud-upload"></ion-icon>
+              </ion-button>
+              <ion-button color="danger" (click)="deleteImage(1,image1)" shape="round" float-right>
+                <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4>
+          <ion-card text-left>
+            <div card-image>
+              <ion-img *ngIf="image2" [src]="image2"></ion-img>
+              <ion-img *ngIf="!image2" [src]="ionload" style="width:32px; height:32px"></ion-img>
+            </div>
+            <ion-card-content>
+              <ion-card-title>
+                <h2 card-subtitle>KYC with Invoice</h2>
+              </ion-card-title>
+              <ion-button (click)="presentActionSheet(2)" shape="round">
+                <ion-icon ios="ios-cloud-upload" md="md-cloud-upload"></ion-icon>
+              </ion-button>
+              <ion-button color="danger" (click)="deleteImage(2,image2)" shape="round" float-right>
+                <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4>
+          <ion-card text-left>
+            <div card-image>
+              <ion-img *ngIf="image3" [src]="image3"></ion-img>
+              <ion-img *ngIf="!image3" [src]="ionload" style="width:32px; height:32px"></ion-img>
+            </div>
+            <ion-card-content>
+              <ion-card-title>
+                <h2 card-subtitle>Member Photo ID(If Delivered to Family)</h2>
+              </ion-card-title>
+              <ion-button (click)="presentActionSheet(3)" shape="round">
+                <ion-icon ios="ios-cloud-upload" md="md-cloud-upload"></ion-icon>
+              </ion-button>
+              <ion-button color="danger" (click)="deleteImage(3,image3)" shape="round" float-right>
+                <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4>
+          <ion-card text-left>
+            <div card-image>
+              <ion-img *ngIf="image4" [src]="image4"></ion-img>
+              <ion-img *ngIf="!image4" [src]="ionload" style="width:32px; height:32px"></ion-img>
+            </div>
+            <ion-card-content>
+              <ion-card-title>
+                <h2 card-subtitle>Extra (Optional)</h2>
+              </ion-card-title>
+
+              <ion-button (click)="presentActionSheet(4)" shape="round">
+                <ion-icon ios="ios-cloud-upload" md="md-cloud-upload"></ion-icon>
+              </ion-button>
+              <ion-button color="danger" (click)="deleteImage(4,image4)" shape="round" float-right>
+                <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+     
+      <ion-row>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="submitDocument()">Submit</ion-button>
+        </ion-col>
+        <ion-col>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

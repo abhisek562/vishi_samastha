@@ -1,0 +1,83 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-joydeb-verify-otp": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-ionic-keyboard": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "call-number": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-camera": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-filepath": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-app-version": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-sqlite-storage": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-ionic-webview": {
+      "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+",
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-filechooser": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-request-location-accuracy": {
+      "PLAY_SERVICES_LOCATION_VERSION": "16.+",
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-app-update": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    },
+    "cordova-plugin-appversion": {
+      "PACKAGE_NAME": "vishi.appycodes.com"
+    }
+  }
+}

@@ -1,0 +1,380 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            Orders
+        </ion-title>
+        <ion-buttons slot="end" class="sync-btn" *ngIf="connectionStatus">
+            <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="online_i_am">Online</span>
+        </ion-buttons>
+        <ion-buttons slot="end" class="sync-btn-no-internet" *ngIf="!connectionStatus">
+            <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="signal-marker">Offline</span>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid class="dashboard-grid">
+        <ion-row>
+            <ion-col>
+                <div class="bold-label">VISHI</div>
+            </ion-col>
+            <ion-col class="col-middle">
+                <div>&nbsp;</div>
+            </ion-col>
+            <ion-col>
+                <div class="bold-label">Order List</div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="dashboard-grid" *ngIf="onlineMode">
+        <ion-row>
+            <ion-col>
+                <div>
+                    <ion-label>All </ion-label>
+                </div>
+            </ion-col>
+            <ion-col>
+                <div class="bold-label col-middle">
+                    <ion-toggle color="light" #alldeliver (ionChange)="toggleChangeAll($event)"></ion-toggle>
+                </div>
+            </ion-col>
+            <ion-col>
+                <div>
+                    <ion-label> Out for devlivery</ion-label>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="dashboard-grid">
+        <ion-row>
+            <ion-col>
+                <div>
+                    <ion-label> Pending</ion-label>
+
+                </div>
+            </ion-col>
+            <ion-col>
+                <div class="bold-label col-middle">
+
+
+                    <ion-toggle color="light" #allpending (ionChange)="toggleChangeDelivered()"></ion-toggle>
+                </div>
+            </ion-col>
+            <ion-col>
+                <div>
+
+                    <ion-label>Delivered </ion-label>
+                </div>
+            </ion-col>
+
+
+
+        </ion-row>
+    </ion-grid>
+    <!-- <ion-grid class="dashboard-grid">
+    <ion-row>
+      <ion-col>
+        <div>
+
+          <ion-label> Fresh </ion-label>
+
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="bold-label col-middle">
+
+
+          <ion-toggle color="light" #replaceorder (ionChange)="toggleChangeOrderType()"></ion-toggle>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+
+
+          <ion-label>Replacement </ion-label>
+        </div>
+      </ion-col>
+
+
+    </ion-row>
+  </ion-grid> -->
+    <ion-grid class="dashboard-grid">
+        <ion-row>
+            <ion-col>
+                <div class="col-middle">
+                    <select (change)="toggleChangeOrderType($event)">
+            <option value="">ALL ORDER TYPE</option>
+            <option *ngFor="let status of allStatus" value="{{status.order_type}}">{{status.order_type}}</option>
+
+          </select>
+
+                    <!-- <ion-toggle color="light" #allpending (ionChange)="toggleChangeDelivered()"></ion-toggle> -->
+                </div>
+            </ion-col>
+
+            <ion-col>
+                <div>
+
+                    <select (change)="relodOrders($event)">
+            <option value="">All company</option>
+            <option *ngFor="let comp of companies" value="{{comp.company}}">{{comp.company}}</option>
+
+          </select>
+
+                </div>
+            </ion-col>
+
+
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="search-module">
+        <ion-row>
+            <ion-col size="9">
+                <ion-searchbar placeholder="Branch / Customer / Customer Id" [(ngModel)]="searchTerm"></ion-searchbar>
+
+            </ion-col>
+            <ion-col size="3">
+                <ion-button expand="block" (click)="searchChanged($event)">
+
+                    Search
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-card class="welcome-card" *ngIf="!results">
+        <ion-card-title>No order found</ion-card-title>
+    </ion-card>
+    <div *ngIf="results">
+        <ion-card class="welcome-card" *ngFor="let post of results">
+
+            <ion-card-header>
+                <a *ngIf="post.center_location" href="https://www.google.com/maps/search/?api=1&query={{post.center_location}}" class="map-location" target="_blank">
+                    <ion-icon ios="ios-pin" md="md-pin">View on map </ion-icon>
+                </a>
+                <ion-card-title>{{post.client_name | titlecase }}</ion-card-title>
+
+
+            </ion-card-header>
+
+            <ion-item-divider>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">
+                                <ion-badge color="warning">{{post.status}}</ion-badge>
+                                <!-- <ion-badge  color="medium" class="urgent" *ngIf="post.status=='undelivered' || post.status=='Undelivered'">{{post.remarks}}</ion-badge> -->
+                                <ion-badge *ngIf="post.urgent==1 && post.status=='pending'" color="medium" class="urgent">Urgent
+                                </ion-badge>
+                            </div>
+                        </ion-col>
+                        <ion-col class="delivery-flex" id="toggle_{{post.id}}_off" *ngIf="(post.out_for_delivery==0 && post.status=='pending')||(post.out_for_delivery==0 && post.status=='Pending')">
+                            <ion-label>Out for delivery </ion-label>
+                            <ion-toggle color="light" [ngModel]="false" (ionChange)="toggleDelivery(post,1)"></ion-toggle>
+                        </ion-col>
+                        <ion-col class="delivery-flex" id="toggle_{{post.id}}_on" *ngIf="(post.out_for_delivery==1 && post.status=='pending')||(post.out_for_delivery==1 && post.status=='Pending')">
+                            <ion-label>Out for delivery </ion-label>
+                            <ion-toggle color="light" disabled [ngModel]="true" (ionChange)="toggleDelivery(post,0)"></ion-toggle>
+                        </ion-col>
+                        <ion-col class="delivery-flex" id="toggle_{{post.id}}_off" *ngIf="(post.out_for_delivery==0 && post.status=='Undelivered')||(post.out_for_delivery==0 && post.status=='undelivered')">
+                            <ion-label>Out for delivery </ion-label>
+                            <ion-toggle color="light" [ngModel]="false" (ionChange)="toggleDelivery(post,1)"></ion-toggle>
+                        </ion-col>
+                        <ion-col class="delivery-flex" id="toggle_{{post.id}}_on" *ngIf="(post.out_for_delivery==1 && post.status=='Undelivered')||(post.out_for_delivery==1 && post.status=='undelivered')">
+                            <ion-label>Out for delivery </ion-label>
+                            <ion-toggle color="light" [ngModel]="true" (ionChange)="toggleDelivery(post,0)"></ion-toggle>
+                        </ion-col>
+                        <ion-col class="delivery-flex" *ngIf="post.status=='delivered'||post.status=='Delivered'">
+                            <ion-toggle color="warning" disabled [ngModel]="true"></ion-toggle>
+                            <ion-label>Already delivered </ion-label>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item-divider>
+            <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="status-label-left bold-label " *ngIf="post.main_company=='BFIL' && post.DeliveryModel=='New'">
+                                <div class="otp-class">OTP</div>
+
+                            </div>
+                        </ion-col>
+                        <ion-col>
+                            <div class="status-label bold-label">
+
+                                {{post.order_type}}
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">Batch Number</div>
+                        </ion-col>
+                        <ion-col>
+                            <div>{{post.batch_number}}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">Batch Date</div>
+                        </ion-col>
+                        <ion-col>
+                            <div>{{post.batch_date}}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">Branch name</div>
+                        </ion-col>
+                        <ion-col>
+                            <div>{{post.branch_name}}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">Customer Name</div>
+                        </ion-col>
+                        <ion-col>
+                            <div>{{post.client_name | titlecase }}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">Husband Name</div>
+                        </ion-col>
+                        <ion-col>
+                            <div>{{post.husband_name | titlecase }}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">Customer Id</div>
+                        </ion-col>
+                        <ion-col>
+                            <div>{{post.client_id}}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">Customer Unique Id</div>
+                        </ion-col>
+                        <ion-col>
+                            <div>{{post.client_unique_id}}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">Company</div>
+                        </ion-col>
+                        <ion-col>
+                            <div>{{post.company}}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div>{{post.address_line_1 | titlecase }}, {{post.address_line_2 | titlecase }}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div class="bold-label">Location</div>
+                        </ion-col>
+                        <ion-col>
+                            <div>{{post.village | titlecase }}</div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid *ngIf="post.status=='delivered'">
+                    <ion-row>
+
+                        <ion-col size="3" *ngFor="let waitingUpload of post.uploded_doc_details">
+                            <div *ngIf="waitingUpload.imageFolder=='front'">
+                                <div *ngIf="waitingUpload.fileName!=post.pod_front" class="empty_space">
+                                    <img class="uploaded_imgae" src="assets/icon/not_uploded.png" />
+                                </div>
+                                <img class="uploaded_imgae" *ngIf="waitingUpload.fileName==post.pod_front" src="{{API_URL}}uploads/pod/front/{{post.pod_front}}" />
+                            </div>
+                            <div *ngIf="waitingUpload.imageFolder=='back'">
+                                <div *ngIf="waitingUpload.fileName!=post.pod_end" class="empty_space">
+                                    <img class="uploaded_imgae" src="assets/icon/not_uploded.png" />
+                                </div>
+                                <img class="uploaded_imgae" *ngIf="waitingUpload.fileName==post.pod_end" src="{{API_URL}}uploads/pod/back/{{post.pod_end}}" />
+                            </div>
+                            <div *ngIf="waitingUpload.imageFolder=='signed'">
+                                <div *ngIf="waitingUpload.fileName!=post.signed_receipt" class="empty_space">
+                                    <img class="uploaded_imgae" src="assets/icon/not_uploded.png" />
+                                </div>
+                                <img class="uploaded_imgae" *ngIf="waitingUpload.fileName==post.signed_receipt" src="{{API_URL}}uploads/pod/signed/{{post.signed_receipt}}" />
+                            </div>
+                            <div *ngIf="waitingUpload.imageFolder=='extra'">
+                                <div *ngIf="waitingUpload.fileName!=post.extra" class="empty_space">
+                                    <img class="uploaded_imgae" src="assets/icon/not_uploded.png" />
+                                </div>
+                                <img class="uploaded_imgae" *ngIf="waitingUpload.fileName==post.extra" src="{{API_URL}}uploads/pod/extra/{{post.extra}}" />
+                            </div>
+
+                        </ion-col>
+
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-button expand="block" (click)="callClient(post.mobile_updated)" *ngIf="post.order_type!='RDSP'">
+                                <ion-icon ios="ios-call" md="md-call"> </ion-icon>
+                                Client
+                            </ion-button>
+                            <ion-button expand="block" (click)="callClient(post.mobile_updated)" *ngIf="post.order_type=='RDSP'">
+                                <ion-icon ios="ios-call" md="md-call"> </ion-icon>
+                                RDSP
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button expand="block" (click)="callBranch(post.bm_number)">
+                                <ion-icon ios="ios-call" md="md-call"> </ion-icon>
+                                Branch
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4" *ngIf="post.status!='delivered'">
+                            <ion-button expand="block" routerLink="/order-details/{{post.id}}">
+                                <ion-icon ios="ios-eye" md="md-eye"> </ion-icon>
+                                Details
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4" *ngIf="post.status=='delivered'">
+                            <ion-button expand="block" *ngIf="post.needSyncing" class="resync" style="--background:#0e6a37!important" (click)="reSyncLocal(post)">
+                                <ion-icon *ngIf="!post.startedsync" ios="ios-sync" md="md-sync"></ion-icon>
+                                <img *ngIf="post.startedsync" src="assets/icon/sync.gif" style="height:21px;width:21px;margin-right: 5px;background: #ffffff;
+                              border-radius: 26px;" /> Re-sync
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ion-card>
+    </div>
+    <ion-list></ion-list>
+    <ion-infinite-scroll *ngIf="onlineMode" threshold="100px" (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

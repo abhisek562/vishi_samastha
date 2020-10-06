@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Unable to deliver <ion-icon (click)="closeModal(orderId)" ios="ios-close" md="md-close"
+        class="modal-cross"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+      <!-- if location not visible then button will show by dipankar@appycodes -->
+      <ion-grid *ngIf="!currentlat && !currentlang">
+        <ion-row>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+            <ion-button (click)="enableloc()">Enable GPS</ion-button>
+          </ion-col>
+          <ion-col>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <!-- end here by dipankar@appycodes -->
+
+  <ion-card class="welcome-card">
+
+    <ion-card-header>
+
+      <ion-card-title *ngIf="!rdspOrder">Choose the appropriate option</ion-card-title>
+      <ion-card-title *ngIf="rdspOrder">Write your remark</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="requirementForm">
+        <ion-list>
+          <ion-radio-group>
+            <div *ngIf="!rdspOrder">
+            <ion-item>
+              <ion-label>Door Lock</ion-label>
+              <ion-radio slot="start" value="Door Lock" checked (click)="openOther($event)"></ion-radio>
+            </ion-item>
+
+            <ion-item *ngIf="!verifyOtp">
+              <ion-label>Address not traceable</ion-label>
+              <ion-radio slot="start" value="Address not traceable"  (click)="openOther($event)"></ion-radio>
+            </ion-item>
+
+            <ion-item *ngIf="!verifyOtp">
+              <ion-label>Consignee not available</ion-label>
+              <ion-radio slot="start" value="Consignee not available" (click)="openOther($event)"></ion-radio>
+            </ion-item>
+
+           
+
+            <ion-item *ngIf="!verifyOtp">
+              <ion-label>KYC Document not available</ion-label>
+              <ion-radio slot="start" value="KYC Document not available" (click)="openOther($event)"></ion-radio>
+            </ion-item>
+
+            <ion-item *ngIf="!verifyOtp">
+              <ion-label>Consignee refused to accept</ion-label>
+              <ion-radio slot="start" value="Consignee refused to accept" (click)="openOther($event)"></ion-radio>
+            </ion-item>
+
+            <ion-item *ngIf="verifyOtp">
+              <ion-label>Member not available</ion-label>
+              <ion-radio slot="start" value="Member not available" (click)="openOther($event)"></ion-radio>
+            </ion-item>
+
+            <ion-item *ngIf="verifyOtp">
+              <ion-label>UN Mismatch</ion-label>
+              <ion-radio slot="start" value="UN Mismatch" (click)="openOther($event)"></ion-radio>
+            </ion-item>
+          </div>
+            <ion-item *ngIf="rdspOrder">
+              <ion-label>Member Not Interested</ion-label>
+              
+            </ion-item>
+           
+            <!-- <ion-item>
+                  <ion-label>Others</ion-label>
+                  <ion-radio slot="start" value="Other"  (click)="openOther($event)" ></ion-radio>
+                </ion-item> -->
+          </ion-radio-group>
+        </ion-list>
+
+
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-input formControlName="otherremark" placeholder="write remark"></ion-input><br />
+            </ion-col>
+          </ion-row>
+          <!-- modified by dipankar@appycodes -->
+          <ion-row>
+            <ion-col>
+              <p>current location:&nbsp;</p>
+              <span>
+                <div class="m-form__help" *ngIf="!(gpsstatus)">{{gpschk}}</div>
+              </span>
+              <p *ngIf="gpsstatus">{{gpschk}}</p>
+              <!-- end here by dipankar@appycodes -->
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-button size="small" class="small-btn" (click)="saveOtherRemark()">Save</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+
+
+</ion-content>

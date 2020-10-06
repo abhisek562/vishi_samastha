@@ -1,0 +1,42 @@
+<ion-content color="dark-contrast" padding>
+  <form [formGroup]="loginForm">
+    <ion-grid>
+      <ion-row color="primary" justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <div text-center class="logo-app"> 
+              <ion-img src="/assets/delivery.png"></ion-img>
+            <h3>Login</h3>
+           
+          </div>
+          <div padding>
+              <app-auth-notice></app-auth-notice>
+            <div>
+                  <ion-item>
+                    <ion-input formControlName="email" type="email" placeholder="Enter email or mobile number" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" ></ion-input>                      
+                  </ion-item>
+                  <span class="invalid-feedback m-form__help" *ngIf="!loginForm.controls['email'].valid && loginForm.controls['email']?.touched">      
+                      <div class="error-login" *ngIf="f.email.errors.required">Email or mobile number required</div>
+                     
+                  </span>                   
+            </div>
+            <div>
+                <ion-item>
+                    <ion-input formControlName="password"  minlength="6" type="password" placeholder="Password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"></ion-input>               
+                </ion-item>
+                <span class="invalid-feedback m-form__help" *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password']?.touched">
+                    <div class="error-login" *ngIf="f.password.errors.required">Password required</div>
+                    <div class="error-login" *ngIf="f.password.errors?.minlength">
+                        Password must be at least 6 characters long.
+                    </div> 
+                </span>
+            </div>
+            
+          </div>
+          <div padding>
+            <ion-button  type="button" (click)="submitLogin()" expand="block">Login</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

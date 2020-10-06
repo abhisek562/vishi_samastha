@@ -1,0 +1,282 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="navigateback()">
+
+      <ion-back-button color="danger" defaultHref="/app/dashbaord/main"></ion-back-button>
+      Order Details
+    </ion-buttons>
+    <ion-buttons slot="end" class="sync-btn" *ngIf="connectionStatus">
+      <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="online_i_am"> Online</span>
+
+    </ion-buttons>
+
+    <ion-buttons slot="end" class="sync-btn-no-internet" *ngIf="!connectionStatus">
+
+
+
+      <ion-icon ios="ios-wifi" md="md-wifi"></ion-icon> <span class="signal-marker"> Offline</span>
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="results">
+    <ion-row>
+      <ion-col *ngIf="results.status!='delivered' && results.status!='cancelled' ">
+        <ion-card-title *ngIf="out_for_delivery">
+          <ion-button expand="block" routerLink="/order-requirements/{{orderId}}">
+
+            Delivered to <br />customer
+          </ion-button>
+        </ion-card-title>
+      </ion-col>
+      <ion-col *ngIf="results.status!='delivered' && results.status!='cancelled' ">
+        <ion-button *ngIf="out_for_delivery" expand="block" routerLink="/order-undeleivered/{{orderId}}">
+          Unable to <br /> deliver
+        </ion-button>
+      </ion-col>
+      <ion-col *ngIf="results.status!='delivered' && results.status!='cancelled' ">
+        <ion-button *ngIf="out_for_delivery" expand="block" (click)="uploadAudio()">
+          <ion-icon ios="ios-cloud-upload" md="md-cloud-upload"></ion-icon> Upload VOC
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col *ngIf="results.status!='delivered'">
+
+          <ion-card-title *ngIf="!out_for_delivery && !order_cancelled" class="text-msg"> Out for delivery not initiated </ion-card-title>
+          <ion-card-title *ngIf="order_cancelled" class="text-msg">This order has been cancelled </ion-card-title>
+         
+         </ion-col>   
+      </ion-row>
+  </ion-grid>
+  
+  <ion-grid *ngIf="otherInput">
+    <ion-row>
+      <ion-col>
+        <form [formGroup]="requirementForm">
+          <ion-input formControlName="remark" placeholder="write remark"></ion-input><br />
+          <ion-button size="small" class="small-btn" (click)="saveOtherRemark()">Save</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card class="welcome-card" *ngIf="results">
+    <ion-card-header>
+
+      <ion-card-title>{{results.client_name | titlecase }} </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Batch Number</div>
+          </ion-col>
+
+          <ion-col>
+            <div>{{results.batch_number }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Batch Date</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.batch_date }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Branch Name</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.branch_name }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Client Name</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.client_name | titlecase }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div >Husband Name</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.husband_name  | titlecase }}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Customer Id</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.client_id}}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Customer Unique Id</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.client_unique_id}}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Loan proposal Id</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.loan_proposal_id }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Model</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.model}}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Supplier Name</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.supplier_name | titlecase }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Address line 1</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.address_line_1 | titlecase }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Address line 2</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.address_line_2 | titlecase }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Landmark</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.landmark | titlecase }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Location</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.village | titlecase }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid *ngIf="results.company=='DLIGHT'">
+        <ion-row>
+          <ion-col>
+            <div>SM name</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.SMName  | titlecase }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid *ngIf="results.company=='DLIGHT'">
+        <ion-row>
+          <ion-col>
+            <div>SM number</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.SMNumber | titlecase }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Delivery Addreess</div>
+          </ion-col>
+          <ion-col>
+            <div>{{results.address_line_1 | titlecase }}, {{results.address_line_2 | titlecase }}</div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-button expand="block" (click)="callClient(results.mobile_updated)">
+              <ion-icon ios="ios-call" md="md-call"> </ion-icon>
+              Client
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button expand="block" (click)="callBranch(results.bm_number)">
+              <ion-icon ios="ios-call" md="md-call"> </ion-icon>
+              Branch
+            </ion-button>
+          </ion-col>
+
+
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

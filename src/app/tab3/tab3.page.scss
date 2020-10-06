@@ -1,0 +1,85 @@
+
+ion-card.welcome-card.sc-ion-card-md-h.sc-ion-card-md-s.hydrated {
+    background: #fff;
+  }
+  :root ion-icon.hydrated {
+    color: #fff;
+    float: right!important;    
+}
+ion-card-header.hydrated {
+    text-align: center;
+}
+ion-icon.modal-cross.hydrated {
+    float:right
+}
+.modal-cross{
+    float:right
+}
+ion-card.welcome-card.sc-ion-card-md-h.sc-ion-card-md-s.hydrated {
+    background: #fff;
+  }
+  .sc-ion-card-md-s ion-list {
+        background: #fff;
+}
+  
+ion-item.in-list.item.ion-focusable.item-label.hydrated {
+    --background: #fff!important;
+    --border-color: #fff;
+}
+ion-radio.in-item.interactive.hydrated.radio-checked {
+    --color-checked: #070606;
+}
+input.native-input.sc-ion-input-md {
+    border: 1px solid #000;
+}
+.sc-ion-input-md-h {
+    border: 1px solid #000;
+    text-align: left;
+}
+.button-solid{
+    --background: #000!important;
+    --background-focused:  #000!important;
+    --color: var(--ion-color-primary-contrast,#fff);
+    --color-activated: var(--ion-color-primary-contrast,#fff);
+    --color-focused: var(--ion-color-primary-contrast,#fff);
+    height: 51px;
+}
+ion-button.small-btn.button.button-small.button-solid.ion-activatable.ion-focusable.hydrated {
+    height: 30px;
+  }
+  ion-col.hydrated {
+    text-align: center;
+}
+
+.error-login {
+    color: red;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.msg{
+    color: red!important;
+    text-align: center;
+    border: 1px solid red!important;
+    padding:10px 15px;
+}
+
+ion-buttons.sync-btn.sc-ion-buttons-md-h.sc-ion-buttons-md-s.hydrated {
+    font-size: 22px;
+  }
+  ion-buttons.sync-btn.sc-ion-buttons-md-h.sc-ion-buttons-md-s.hydrated ion-icon{
+    color:rgb(14, 194, 84)!important
+  }
+  ion-buttons.sync-btn-no-internet.sc-ion-buttons-md-h.sc-ion-buttons-md-s.hydrated ion-icon{
+  color:#ff0000 !important
+  }
+  
+  .online_i_am {
+    animation: blinker 4s linear infinite;
+    font-size:13px;
+    color: #fff;
+  }
+  ion-icon.hydrated {
+    margin-inline-end: 5px!important;
+  }
