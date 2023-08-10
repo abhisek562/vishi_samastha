@@ -24,6 +24,8 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 const STORAGE_KEY = 'pennco_images';
 declare var VerifyOtp: any;
+const imageFolderName = environment.imageFolderName;
+
 @Component({
   selector: 'app-order-requirements',
   templateUrl: './order-requirements.page.html',
@@ -44,7 +46,7 @@ export class OrderRequirementsPage implements OnInit {
   requirementForm: FormGroup;
   submitted = false;
   pushImagesArr = []; /* variable added by dipankar@appycodes */
-  verifyOtp = false;
+  verifyOtp = true;
   otpCheck = false;
   otpVerifiedMsg: boolean = false;
   customer: any;
@@ -61,10 +63,13 @@ export class OrderRequirementsPage implements OnInit {
   requirementConStat: Subscription;
   submitDoc: Subscription;
   @ViewChild(IonContent) content: IonContent;
-  currentlat: number; /* variable added by dipankar@appycodes */
-  currentlang: number; /* variable added by dipankar@appycodes */
+  currentlat: any; /* variable added by dipankar@appycodes */
+  currentlang: any; /* variable added by dipankar@appycodes */
   gpsstatus = false; /* variable added by dipankar@appycodes */
   gpschk = 'No GPS Location'; /* variable added by dipankar@appycodes */
+  mainCompany: any;
+  validateEvent: any;
+  imgPath: string;
 
   constructor(
     private router: Router,
@@ -96,6 +101,7 @@ export class OrderRequirementsPage implements OnInit {
     };
 
   }
+  
 
   ionViewWillEnter() {
     this.image1 = '/assets/camera.svg';
@@ -104,10 +110,34 @@ export class OrderRequirementsPage implements OnInit {
     this.image4 = '/assets/camera.svg';
 
     this.checkGPSPermission(); /* page refesh if change added by dipankar@appycodes */
+
+    let imgPath = this.file.externalRootDirectory + imageFolderName;
+    this.file.checkDir(this.file.externalRootDirectory, imageFolderName)
+      .then(chkpth => {
+        console.log('checkDir - Directory exists: ', chkpth);
+        if (chkpth) {
+          console.log('imgPath::', imgPath);
+          this.imgPath = imgPath;
+        }
+      })
+      .catch(err => {
+        console.log('Directory doesnt exist: ', err);
+        this.file.createDir(this.file.externalRootDirectory, imageFolderName, false).then(
+          shw => {
+            console.log('Directory exists: ', shw);
+            imgPath = this.file.externalRootDirectory + imageFolderName;
+            this.imgPath = imgPath;
+          });
+      });
+
   }
   ionViewWillLeave() {
-    this.requirementConStat.unsubscribe();
-    this.submitDoc.unsubscribe();
+    if (typeof this.requirementConStat !== 'undefined') {
+      this.requirementConStat.unsubscribe();
+    }
+    if (typeof this.submitDoc !== 'undefined') {
+      this.submitDoc.unsubscribe();
+    }
   }
   /* GPS Function Enable by dipankar@appycodes */
 
@@ -167,25 +197,22 @@ export class OrderRequirementsPage implements OnInit {
 
   // To get device accurate coordinates using device GPS
   getLocationCoordinates() {
-    this.geolocation.getCurrentPosition().then((data) => {
-      this.currentlat = data.coords.latitude; /* coodinates added by dipankar@appycodes */
-      this.currentlang = data.coords.longitude; /* coodinates added by dipankar@appycodes */
-      console.log('Latitude : ' + this.currentlat + ' Longitude :' + this.currentlang); /* uncomment by dipankar@appycodes */
-      if (this.currentlat > 0 && this.currentlang > 0) {
-        this.gpsstatus = true;
-        this.gpschk = (this.currentlat + ',' + this.currentlang);
-        console.log('GPS: ' + this.gpschk); /* new gps condition added by dipankar@appycodes */
-        this.requirementForm.get('current_lat').setValue(this.currentlat);
-        this.requirementForm.get('current_lng').setValue(this.currentlang);
-        this.requirementForm.get('geo_tag').setValue(this.gpschk); /* modified by dipankar@appycodes on geotage issue */
-      } else {
-        this.gpsstatus = false;
-        console.log('No GPS Location');
-        this.gpschk = 'No GPS Location';
-      }
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
+    this.currentlat = 1; /* Done by Swati*/
+    this.currentlang = 1;/* Done by Swati*/
+
+    if (this.currentlat > 0 && this.currentlang > 0) {
+      this.gpsstatus = true;
+      this.gpschk = (this.currentlat + ',' + this.currentlang);
+      console.log('GPS: ' + this.gpschk); /* new gps condition added by dipankar@appycodes */
+      this.requirementForm.get('current_lat').setValue(this.currentlat);
+      this.requirementForm.get('current_lng').setValue(this.currentlang);
+      this.requirementForm.get('geo_tag').setValue(this.gpschk);
+      /* modified by dipankar@appycodes */
+    } else {
+      this.gpsstatus = false;
+      console.log('No GPS Location');
+      this.gpschk = 'No GPS Location';
+    }
   }
 
   /* end here by dipankar@appycodes */
@@ -227,6 +254,17 @@ export class OrderRequirementsPage implements OnInit {
       });
 
       this.changeDe.detectChanges();
+    } else if (this.mainCompany === 'SAMASTHA') {
+      if (this.un1 === podnum) {
+        this.otpVeridfied();
+        this.otpVerifiedMsg = true;
+        localStorage.setItem('otpVerified', '1');
+      } else {
+        this.otpNotVeridfied();
+        this.otpVerifiedMsg = false;
+        localStorage.setItem('otpVerified', '0');
+      }
+      this.changeDe.detectChanges();
     } else {
       verify.show(
         { 'un1': this.un1, 'un2': this.un2, 'plain': podnum },
@@ -266,6 +304,7 @@ export class OrderRequirementsPage implements OnInit {
       podtype: ['', [Validators.required]],
       receivedby: [],
       adharnumber: ['', [Validators.required]],
+      voternumber:['',[Validators.required]],
       delivery: ['delivered'],
       remark: [''],
       podFront: ['', [Validators.required]],
@@ -301,7 +340,7 @@ export class OrderRequirementsPage implements OnInit {
               } else {
                 this.verifyOtp = false;
               }
-
+              this.mainCompany = res.main_company;
               this.un1 = res.UN1;
               this.un2 = res.UN2;
               this.un3 = res.UN3;
@@ -328,7 +367,7 @@ export class OrderRequirementsPage implements OnInit {
               } else {
                 this.verifyOtp = false;
               }
-
+              this.mainCompany = res.main_company;
               this.un1 = res.UN1;
               this.un2 = res.UN2;
               this.un3 = res.UN3;
@@ -397,21 +436,30 @@ export class OrderRequirementsPage implements OnInit {
         targetHeight: 800,
       };
     }
+    try {
+      this.camera.getPicture(options).then(imagePath => {
+        if (sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+          this.filePath.resolveNativePath(imagePath)
+            .then(filePath => {
+              let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+              let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+              this.copyFileToLocalDir(correctPath, currentName, this.createFileName(), id);
+            });
+        } else {
+          var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+          var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+          this.copyFileToLocalDir(correctPath, currentName, this.createFileName(), id);
+        }
+      }, (error) => {
+        console.log("Unable to obtain picture: " + error);
+        // console.debug("Unable to obtain picture: " + error, "app");
+        this.somethingWrong();
+      });
 
-    this.camera.getPicture(options).then(imagePath => {
-      if (sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        this.filePath.resolveNativePath(imagePath)
-          .then(filePath => {
-            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            this.copyFileToLocalDir(correctPath, currentName, this.createFileName(), id);
-          });
-      } else {
-        var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        this.copyFileToLocalDir(correctPath, currentName, this.createFileName(), id);
-      }
-    });
+    } catch (e) {
+      this.somethingWrong();
+      return;
+    }
   }
 
   /* uploadImageData updated by dipankar@appycodes */
@@ -510,7 +558,7 @@ export class OrderRequirementsPage implements OnInit {
 
   copyFileToLocalDir(namePath, currentName, newFileName, id) {
 
-    this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
+    this.file.copyFile(namePath, currentName, this.imgPath, newFileName).then(success => {
       // console.log('copyFile:::: ', success);
       this.updateStoredImages(newFileName, id);
     }, error => {
@@ -529,7 +577,7 @@ export class OrderRequirementsPage implements OnInit {
         this.storage.set(STORAGE_KEY, JSON.stringify(arr));
       }
 
-      let filePath = this.file.dataDirectory + name;
+      let filePath = this.imgPath + name;
       // console.log('filePath::: ', filePath);
       // this.resizeImage(filePath,id);
       let resPath = this.pathForImage(filePath);
@@ -591,12 +639,59 @@ export class OrderRequirementsPage implements OnInit {
   }
 
   validateAdahar(event) {
+    this.validateEvent = event.target.value;
     if (event.target.value === 'aadhaar') {
       this.requirementForm.controls['adharnumber']
         .setValidators([
           Validators.required,
           Validators.minLength(12),
           Validators.minLength(12),
+          Validators.pattern('[+-]?([0-9]*[.])?[0-9]+')
+        ]);
+      this.requirementForm.controls['adharnumber'].updateValueAndValidity();
+    }
+    if(event.target.value === 'voter'){
+      this.requirementForm.controls['aadhaarnumber']
+      .setValidators([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.minLength(4),
+        Validators.pattern('^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]+$')
+      ]);
+    this.requirementForm.controls['aadharnumber'].updateValueAndValidity();
+    }
+    if(event.target.value === 'loanpassbook'){
+      this.requirementForm.controls['aadhaarnumber']
+      .setValidators([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.minLength(4),
+        Validators.pattern('[a-zA-Z0-9]')
+      ]);
+    this.requirementForm.controls['aadharnumber'].updateValueAndValidity();
+    }
+   
+
+
+    if(event.target.value === 'UniqueNumber'){
+      this.verifyOtp = true;
+      
+      this.requirementForm.controls['aadhaarnumber']
+      .setValidators([
+        Validators.required,
+        Validators.maxLength(6),
+        Validators.maxLength(6),
+        Validators.pattern('[0-9]')
+      ]);
+    this.requirementForm.controls['aadhaarnumber'].updateValueAndValidity();
+    }
+
+    if (this.mainCompany == 'SAMASTHA') {
+      this.requirementForm.get('adharnumber').clearValidators();
+      this.requirementForm.get('adharnumber').updateValueAndValidity();
+      this.requirementForm.controls['adharnumber']
+        .setValidators([
+          Validators.minLength(6),
           Validators.pattern('[+-]?([0-9]*[.])?[0-9]+')
         ]);
       this.requirementForm.controls['adharnumber'].updateValueAndValidity();
@@ -611,9 +706,17 @@ export class OrderRequirementsPage implements OnInit {
   submitDocument() {
     // this.loading.present();
     this.submitted = true;
+    if (this.mainCompany == 'SAMASTHA') {
+      this.requirementForm.get('adharnumber').clearValidators();
+      this.requirementForm.get('adharnumber').updateValueAndValidity();
+      this.requirementForm.controls['adharnumber'].setValidators([Validators.pattern('[+-]?([0-9]*[.])?[0-9]+')]);
+      this.requirementForm.controls['adharnumber'].updateValueAndValidity();
+      this.requirementForm.get('podtype').setValue('UniqueNumber');
+      localStorage.setItem('otpVerified', '1');
+    }
 
     if (this.requirementForm.invalid) {
-      console.log('invalid: ====', this.requirementForm.value);
+      console.log('invalid: ====', this.requirementForm);
       // this.loading.dismiss();
       this.content.scrollToTop(1500);
       let otpmsg = 'Please fill all fields';
@@ -689,6 +792,20 @@ export class OrderRequirementsPage implements OnInit {
   saved() {
     this.toast = this.toastController.create({
       message: 'Order documents has been saved ',
+      duration: 4000,
+      showCloseButton: true,
+      position: 'middle',
+      closeButtonText: 'Close',
+      animated: true,
+      cssClass: 'my-custom-class'
+    }).then((toastData) => {
+      toastData.present();
+    });
+  }
+
+  somethingWrong() {
+    this.toast = this.toastController.create({
+      message: 'Unable to obtain picture.',
       duration: 4000,
       showCloseButton: true,
       position: 'middle',
